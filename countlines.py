@@ -1,26 +1,22 @@
-#exercise here
+# exercise here
 import sys
 from functools import reduce
+
+
 def counter():
-    """
-    Counts the number of lines in a file.
-    """
-    print("[", end='')
-    for arg in sys.argv[1:]:
-        count = count_lines_in_file(arg)
-        if count != -1:
-            print(f"('{arg}', {count})", end=',')
-    print("]")
+    print(list(zip(sys.argv[1:], map(count_lines_in_file, sys.argv[1:]))))
     print("The total number of lines is {}".format(total_lines()))
+
 
 def count_lines_in_file(filename):
     """
     Counts the number of lines in a file.
     """
-    try: 
+    try:
         with open(filename) as f:
-            return sum(1 for line in f)
+            return len(f.readlines())
     except FileNotFoundError:
+        print("File is not exist!")
         return -1
 
 
@@ -28,8 +24,8 @@ def total_lines():
     """
     Counts the number of lines in all files.
     """
-    return reduce(lambda x, y : x + y , [count_lines_in_file(arg) for arg in sys.argv[1:]])
-    
+    return reduce(lambda x, y: x + y, list(map(count_lines_in_file,  sys.argv[1:])))
+
 
 if __name__ == '__main__':
     counter()
